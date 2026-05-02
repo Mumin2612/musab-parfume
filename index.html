@@ -2,51 +2,33 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>MUS'AB PARFUME</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Musab Parfume</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        .catalog { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 80px; }
+        .card { background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; }
+        h3 { font-size: 14px; margin: 5px 0; color: #d4af37; }
+        .price-tag { font-weight: bold; margin: 10px 0; color: #fff; }
+        .buy-btn { background: #d4af37; color: #000; border: none; padding: 8px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .vol-btn { background: #333; color: #fff; border: 1px solid #44; margin: 2px; padding: 4px; font-size: 10px; border-radius: 3px; }
+        .vol-btn.active { background: #d4af37; color: #000; }
+        #cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; padding: 15px; display: none; justify-content: space-between; border-top: 1px solid #d4af37; z-index: 100; }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1 class="logo">MUS'AB IBN 'UMAYR</h1>
-            <p class="tagline">Premium Oils • Warsaw</p>
-        </header>
 
-        <div id="catalog" class="catalog-grid"></div>
+    <h2 style="text-align: center; color: #d4af37;">MUS'AB PARFUME</h2>
+    <div id="catalog" class="catalog"></div>
 
-        <!-- Нижняя плашка -->
-        <div id="cart-bar" class="cart-bar" onclick="showCart()">
-            <span id="bar-count">0 шт.</span>
-            <span>ПОСМОТРЕТЬ ЗАКАЗ</span>
-            <span id="bar-total">0 zł</span>
-        </div>
-
-        <!-- ПОЛНОЭКРАННАЯ ФОРМА КОРЗИНЫ -->
-        <div id="cart-overlay" class="overlay">
-            <div class="overlay-header">
-                <h2>Ваш заказ</h2>
-                <button class="close-btn" onclick="hideCart()">✕</button>
-            </div>
-            
-            <div id="cart-list" class="cart-list">
-                <!-- Сюда JS вставит товары -->
-            </div>
-            
-            <div class="checkout-footer">
-                <div class="total-row">
-                    <span>Итого к оплате:</span>
-                    <span id="overlay-total">0 zł</span>
-                </div>
-                <div class="order-info">
-                    <p>После подтверждения мы свяжемся с вами в Telegram для уточнения доставки.</p>
-                </div>
-            </div>
-        </div>
+    <div id="cart-bar">
+        <span id="bar-count">0 шт.</span>
+        <b id="bar-total">0 zł</b>
     </div>
 
+    <!-- Сначала библиотека Телеграм -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="app.js?v=1.1"></script>
+    <!-- Потом твой скрипт -->
+    <script src="app.js"></script>
 </body>
 </html>
