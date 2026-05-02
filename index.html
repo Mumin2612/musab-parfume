@@ -32,17 +32,20 @@
             
             <div id="cart-list" class="cart-list"></div>
             
-            <div class="checkout-footer">
-                <div class="total-row">
-                    <span>Итого к оплате:</span>
-                    <span id="overlay-total">0 zł</span>
-                </div>
-                <div class="order-info">
-                    <p>После подтверждения заказ будет отправлен администратору.</p>
-                </div>
-            </div>
-        </div>
+           <div class="checkout-footer">
+    <div class="total-row">
+        <span>Итого к оплате:</span>
+        <span id="overlay-total">0 zł</span>
     </div>
+    
+    <button id="process-order-btn" class="buy-btn" style="margin-top: 15px; width: 100%; display: none;" onclick="sendOrder()">
+        ПОДТВЕРДИТЬ ЗАКАЗ
+    </button>
+    
+    <div class="order-info">
+        <p>После нажатия данные будут отправлены в чат с ботом.</p>
+    </div>
+</div>
 
     <!-- Загружаем SDK Телеграма -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
