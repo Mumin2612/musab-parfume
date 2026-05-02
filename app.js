@@ -10,6 +10,9 @@ const products = [
 ];
 
 function init() {
+    tg.ready();
+    tg.expand();
+    
     const catalog = document.getElementById('catalog');
     if (!catalog) return;
 
@@ -28,9 +31,6 @@ function init() {
             </div>
         `;
     }).join('');
-
-    tg.ready();
-    tg.expand();
 }
 
 window.setVolume = function(id, vol, event) {
@@ -52,7 +52,7 @@ window.addToCart = function(id) {
     if (existing) { existing.qty++; } 
     else { cart.push({ id, name: p.name, vol, price, qty: 1 }); }
     
-    tg.HapticFeedback.impactOccurred('light');
+    if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     updateUI();
 };
 
@@ -101,30 +101,28 @@ function updateUI() {
     document.getElementById('overlay-total').innerText = `${total} zł`;
 
     if (total > 0) {
-        tg.MainButton.setParams({
-            text: `ОФОРМИТЬ ЗАКАЗ (${total} zł)`,
-            is_visible: true,
-            is_active: true,
-            color: '#d4af37',
-            text_color: '#000000'
-        });
+        tg.MainButton.text = `ОФОРМИТЬ ЗАКАЗ (${total} zł)`;
+        tg.MainButton.show();
+        tg.MainButton.enable();
     } else {
         tg.MainButton.hide();
     }
 }
 
-tg.onEvent('mainButtonClicked', () => {
-    const user = tg.initDataUnsafe?.user?.username || "UnknownUser";
-    const orderItems = cart.map(i => `- ${i.name} (${i.vol}ml) x${i.qty}`).join('\n');
-    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    
-    const data = {
-        user: user,
-        order: orderItems,
-        total: total
+// ИСПОЛЬЗУЕМ БОЛЕЕ НАДЕЖНЫЙ МЕТОД ОБРАБОТКИ КЛИКА
+tg.MainButton.onClick(function() {
+    if (cart.length === 0) return;
+
+    const orderData = {
+        items: cart.map(i => ({name: i.name, vol: i.vol, qty: i.qty})),
+        total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
     };
 
-    tg.sendData(JSON.stringify(data));
+    // Отправляем данные и ЗАКРЫВАЕМ приложение (это принудительно заставляет ТГ обработать данные)
+    tg.sendData(JSON.stringify(orderData));
+    
+    // Если sendData все равно не пускает бот, можно использовать закрытие:
+    // tg.close(); 
 });
 
 init();
