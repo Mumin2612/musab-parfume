@@ -11,6 +11,7 @@ const products = [
 
 let cart = [];
 let selectedVolumes = {};
+const tg = window.Telegram.WebApp;
 
 function init() {
     const catalog = document.getElementById('catalog');
@@ -34,87 +35,47 @@ function init() {
         `;
     }).join('');
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
-    }
+    tg.ready();
+    tg.expand();
 }
 
 function setVolume(id, vol) {
     selectedVolumes[id] = vol;
     const p = products.find(x => x.id === id);
-    const priceElem = document.getElementById(`price-${id}`);
-    if (priceElem) priceElem.innerText = `${p.prices[vol]} zł`;
-    
-    const container = document.getElementById(`vol-sel-${id}`);
-    if (container) {
-        const btns = container.querySelectorAll('.vol-btn');
-        btns.forEach(b => {
-            b.classList.remove('active');
-            if(parseInt(b.innerText) === vol) b.classList.add('active');
-        });
-    }
+    document.getElementById(`price-${id}`).innerText = `${p.prices[vol]} zł`;
+    const btns = document.getElementById(`vol-sel-${id}`).querySelectorAll('.vol-btn');
+    btns.forEach(b => {
+        b.classList.remove('active');
+        if(parseInt(b.innerText) === vol) b.classList.add('active');
+    });
 }
 
 function addToCart(id) {
     const p = products.find(x => x.id === id);
     const vol = selectedVolumes[id];
     const price = p.prices[vol];
-    
     const existing = cart.find(item => item.id === id && item.vol === vol);
-    if (existing) {
-        existing.qty++;
-    } else {
-        cart.push({ id, name: p.name, vol, price, qty: 1 });
-    }
-    
-    if (window.Telegram && window.Telegram.WebApp.HapticFeedback) {
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-    }
+    if (existing) { existing.qty++; } else { cart.push({ id, name: p.name, vol, price, qty: 1 }); }
+    tg.HapticFeedback.impactOccurred('light');
     updateUI();
 }
 
 function updateUI() {
     let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    let count = cart.reduce((sum, item) => sum + item.qty, 0);
-
     const bar = document.getElementById('cart-bar');
     if (bar) {
         bar.style.display = total > 0 ? 'flex' : 'none';
         document.getElementById('bar-total').innerText = `${total} zł`;
-        document.getElementById('bar-count').innerText = `${count} шт.`;
+        document.getElementById('bar-count').innerText = `${cart.reduce((s, i) => s + i.qty, 0)} шт.`;
     }
-
-    const list = document.getElementById('cart-list');
-    if (list) {
-        list.innerHTML = cart.map((item, index) => `
-            <div class="cart-item">
-                <div><b>${item.name}</b> (${item.vol}ml)</div>
-                <div class="qty-controls">
-                    <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    const overTotal = document.getElementById('overlay-total');
-    if (overTotal) overTotal.innerText = `${total} zł`;
-
-    if (window.Telegram && window.Telegram.WebApp.MainButton) {
-        const mainBtn = window.Telegram.WebApp.MainButton;
-        if (total > 0) {
-            mainBtn.setParams({
-                text: `ОФОРМИТЬ ЗАКАЗ (${total} zł)`,
-                color: '#d4af37',
-                text_color: '#000000',
-                is_visible: true,
-                is_active: true
-            });
-        } else {
-            mainBtn.hide();
-        }
+    
+    // Настройка главной кнопки
+    if (total > 0) {
+        tg.MainButton.text = `ОФОРМИТЬ ЗАКАЗ (${total} zł)`;
+        tg.MainButton.show();
+        tg.MainButton.enable();
+    } else {
+        tg.MainButton.hide();
     }
 }
 
@@ -127,10 +88,13 @@ function changeQty(index, delta) {
 function showCart() { document.getElementById('cart-overlay').classList.add('active'); }
 function hideCart() { document.getElementById('cart-overlay').classList.remove('active'); }
 
-if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-        window.Telegram.WebApp.sendData(JSON.stringify(cart));
-    });
-}
+// ПРЯМОЙ ОБРАБОТЧИК НАЖАТИЯ
+tg.onEvent('mainButtonClicked', function(){
+    const orderText = cart.map(i => `${i.name} (${i.vol}ml) x${i.qty}`).join('\n');
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const fullMessage = `Заказ:\n${orderText}\nИтого: ${total} zł`;
+    
+    tg.sendData(fullMessage); // Приложение ДОЛЖНО закрыться
+});
 
 init();
