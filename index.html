@@ -16,12 +16,14 @@
 
         <div id="catalog" class="catalog-grid"></div>
 
+        <!-- Нижняя плашка -->
         <div id="cart-bar" class="cart-bar" onclick="showCart()" style="display: none;">
             <span id="bar-count">0 шт.</span>
             <span>ПОСМОТРЕТЬ ЗАКАЗ</span>
             <span id="bar-total">0 zł</span>
         </div>
 
+        <!-- Корзина -->
         <div id="cart-overlay" class="overlay">
             <div class="overlay-header">
                 <h2>Ваш заказ</h2>
@@ -36,12 +38,13 @@
                     <span id="overlay-total">0 zł</span>
                 </div>
                 <div class="order-info">
-                    <p>После подтверждения мы свяжемся с вами в Telegram для уточнения доставки.</p>
+                    <p>После подтверждения заказ будет отправлен администратору.</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Загружаем SDK Телеграма -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="app.js"></script>
 </body>
