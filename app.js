@@ -37,7 +37,6 @@ window.setVolume = function(id, vol, event) {
     selectedVolumes[id] = vol;
     const p = products.find(x => x.id === id);
     document.getElementById(`price-${id}`).innerText = `${p.prices[vol]} zł`;
-    
     const btns = document.getElementById(`vol-sel-${id}`).querySelectorAll('.vol-btn');
     btns.forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
@@ -47,22 +46,15 @@ window.addToCart = function(id) {
     const p = products.find(x => x.id === id);
     const vol = selectedVolumes[id];
     const price = p.prices[vol];
-    
     const existing = cart.find(item => item.id === id && item.vol === vol);
     if (existing) { existing.qty++; } 
     else { cart.push({ id, name: p.name, vol, price, qty: 1 }); }
-    
     if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     updateUI();
 };
 
-window.showCart = function() {
-    document.getElementById('cart-overlay').classList.add('active');
-};
-
-window.hideCart = function() {
-    document.getElementById('cart-overlay').classList.remove('active');
-};
+window.showCart = function() { document.getElementById('cart-overlay').classList.add('active'); };
+window.hideCart = function() { document.getElementById('cart-overlay').classList.remove('active'); };
 
 window.changeQty = function(index, delta) {
     cart[index].qty += delta;
@@ -99,30 +91,29 @@ function updateUI() {
     }
 
     document.getElementById('overlay-total').innerText = `${total} zł`;
-
-    if (total > 0) {
-        tg.MainButton.text = `ОФОРМИТЬ ЗАКАЗ (${total} zł)`;
-        tg.MainButton.show();
-        tg.MainButton.enable();
-    } else {
-        tg.MainButton.hide();
-    }
+    
+    const btn = document.getElementById('process-order-btn');
+    if (btn) btn.style.display = total > 0 ? 'block' : 'none';
 }
 
-// ИСПОЛЬЗУЕМ БОЛЕЕ НАДЕЖНЫЙ МЕТОД ОБРАБОТКИ КЛИКА
-tg.MainButton.onClick(function() {
+window.sendOrder = function() {
     if (cart.length === 0) return;
 
-    const orderData = {
-        items: cart.map(i => ({name: i.name, vol: i.vol, qty: i.qty})),
-        total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
+    const user = tg.initDataUnsafe?.user;
+    const userRef = user ? (user.username ? `@${user.username}` : user.first_name) : "Клиент";
+
+    const orderDetails = cart.map(i => `${i.name} (${i.vol}ml) x${i.qty}`).join('\n');
+    const finalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    const result = {
+        customer: userRef,
+        order: orderDetails,
+        total: finalPrice + " zł"
     };
 
-    // Отправляем данные и ЗАКРЫВАЕМ приложение (это принудительно заставляет ТГ обработать данные)
-    tg.sendData(JSON.stringify(orderData));
+    tg.sendData(JSON.stringify(result));
     
-    // Если sendData все равно не пускает бот, можно использовать закрытие:
-    // tg.close(); 
-});
+    tg.close();
+};
 
 init();
