@@ -22,8 +22,8 @@ function init() {
         selectedVolumes[p.id] = 10;
         return `
             <div class="card">
-                <img src="${p.img}" alt="${p.name}">
-                <h3>${p.name}</h3>
+                <img src="${p.img}" alt="${p.name}" onclick="openModal(${p.id})">
+                <h3 onclick="openModal(${p.id})">${p.name}</h3>
                 <div class="desc">${p.desc}</div>
                 <div class="volume-selector" id="vol-sel-${p.id}">
                     ${[10, 15, 30, 50].map(v => `<button class="vol-btn ${v==10?'active':''}" onclick="setVolume(${p.id}, ${v}, event)">${v}ml</button>`).join('')}
@@ -34,6 +34,19 @@ function init() {
         `;
     }).join('');
 }
+
+window.openModal = function(id) {
+    const product = products.find(p => p.id === id);
+    document.getElementById('modal-img').src = product.img;
+    document.getElementById('modal-title').innerText = product.name;
+    document.getElementById('modal-desc').innerText = product.desc;
+    document.getElementById('product-modal').style.display = 'block';
+};
+
+window.closeModal = function(event) {
+
+    document.getElementById('product-modal').style.display = 'none';
+};
 
 window.setVolume = function(id, vol, event) {
     selectedVolumes[id] = vol;
@@ -118,7 +131,8 @@ window.sendOrder = function() {
         tg.close();
     } catch (e) {
         console.error("Ошибка TG SDK:", e);
-        alert("Пожалуйста, запустите магазин через кнопку в меню бота, чтобы оформить заказ.");
+        alert("Пожалуйста, запустите магазин через кнопку в меню бота.");
     }
 };
+
 init();
