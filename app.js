@@ -102,7 +102,7 @@ window.sendOrder = function() {
     const user = tg.initDataUnsafe?.user;
     const userRef = user ? (user.username ? `@${user.username}` : user.first_name) : "Клиент";
 
-    const orderDetails = cart.map(i => `${i.name} (${i.vol}ml) x${i.qty}`).join('\n');
+    const orderDetails = cart.map(i => `${i.name} (${i.vol}ml) x${i.qty}`).join(', ');
     const finalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     const result = {
@@ -111,9 +111,11 @@ window.sendOrder = function() {
         total: finalPrice + " zł"
     };
 
-    tg.sendData(JSON.stringify(result));
-    
-    tg.close();
+    try {
+        tg.sendData(JSON.stringify(result));
+        tg.close();
+    } catch (e) {
+        console.error("Ошибка TG SDK:", e);
+        alert("Пожалуйста, запустите магазин через кнопку в меню бота, чтобы оформить заказ.");
+    }
 };
-
-init();
