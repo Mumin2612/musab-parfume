@@ -3,10 +3,12 @@ let cart = [];
 let selectedVolumes = {};
 
 const products = [
-    { id: 1, name: "MU #01 Inspiration", desc: "Свежий цитрусовый аромат. Твой идеальный спутник.", img: "https://via.placeholder.com/300", prices: {10: 45, 15: 65, 30: 110, 50: 160} },
-    { id: 2, name: "MU #02 Tobacco Vanille", desc: "Теплый табак и сладкая ваниль. Роскошь.", img: "https://via.placeholder.com/300", prices: {10: 50, 15: 75, 30: 130, 50: 180} },
-    { id: 3, name: "MU #03 Kirke Tiziana", desc: "Фруктовый коктейль с невероятным шлейфом.", img: "https://via.placeholder.com/300", prices: {10: 45, 15: 70, 30: 110, 50: 170} },
-    { id: 4, name: "MU #04 Molecule 02", desc: "Чистая амбра, раскрывается индивидуально.", img: "https://via.placeholder.com/300", prices: {10: 55, 15: 80, 30: 140, 50: 200} }
+    { id: 1, name: "Bleu de Chanel", desc: "Универсальный древесно-фужерный аромат. Свежесть цитрусов, мята и глубокая древесная база.", img: "bleu.jpg", prices: {10: 45, 15: 65, 30: 110, 50: 160} },
+    { id: 2, name: "Paco Rabanne Invictus", desc: "Бодрый морской аромат. Грейпфрут, лавровый лист и гваяковое дерево.", img: "invictus.jpg", prices: {10: 45, 15: 65, 30: 110, 50: 160} },
+    { id: 3, name: "Creed Aventus Standart", desc: "Легендарный шипровый аромат. Фруктовая свежесть и дымная глубина.", img: "aventus_std.jpg", prices: {10: 40, 15: 60, 30: 100, 50: 150} },
+    { id: 4, name: "Escentric Molecules 02", desc: "Минималистичный аромат на основе амброксана. Чистый, теплый и сексуальный.", img: "molecules02.jpg", prices: {10: 50, 15: 75, 30: 130, 50: 180} },
+    { id: 5, name: "Louis Vuitton Imagination", desc: "Роскошный цитрусовый аромат с нотами чая, имбиря и амброксана.", img: "imagination.jpg", prices: {10: 60, 15: 90, 30: 160, 50: 240} },
+    { id: 6, name: "Kilian Angels' Share", desc: "Гурманский шедевр: ноты коньяка, корицы, дуба и сладкой ванили.", img: "img/angels_share.jpg", prices: {10: 65, 15: 95, 30: 180, 50: 260} },
 ];
 
 function init() {
