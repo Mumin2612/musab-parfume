@@ -32,20 +32,34 @@
             
             <div id="cart-list" class="cart-list"></div>
             
-           <div class="checkout-footer">
-    <div class="total-row">
-        <span>Итого к оплате:</span>
-        <span id="overlay-total">0 zł</span>
+            <div class="checkout-footer">
+                <div class="total-row">
+                    <span>Итого к оплате:</span>
+                    <span id="overlay-total">0 zł</span>
+                </div>
+                
+                <button id="process-order-btn" class="buy-btn" style="margin-top: 15px; width: 100%; display: none;" onclick="sendOrder()">
+                    ПОДТВЕРДИТЬ ЗАКАЗ
+                </button>
+                
+                <div class="order-info">
+                    <p>После нажатия данные будут отправлены в чат с ботом.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для детального просмотра товара -->
+        <div id="product-modal" class="product-modal" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-body">
+                    <img id="modal-img" src="" alt="">
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-desc"></p>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <button id="process-order-btn" class="buy-btn" style="margin-top: 15px; width: 100%; display: none;" onclick="sendOrder()">
-        ПОДТВЕРДИТЬ ЗАКАЗ
-    </button>
-    
-    <div class="order-info">
-        <p>После нажатия данные будут отправлены в чат с ботом.</p>
-    </div>
-</div>
 
     <!-- Загружаем SDK Телеграма -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
