@@ -3,12 +3,14 @@ let cart = [];
 let selectedVolumes = {};
 
 const products = [
-    { id: 1, name: "Bleu de Chanel", desc: "Универсальный древесно-фужерный аромат. Свежесть цитрусов, мята и глубокая древесная база.", img: "blue.jpg", prices: {10: 45, 15: 65, 30: 110, 50: 160} },
-    { id: 2, name: "Paco Rabanne Invictus", desc: "Бодрый морской аромат. Грейпфрут, лавровый лист и гваяковое дерево.", img: "invictus.jpg", prices: {10: 45, 15: 65, 30: 110, 50: 160} },
-    { id: 3, name: "Creed Aventus Standart", desc: "Легендарный шипровый аромат. Фруктовая свежесть и дымная глубина.", img: "aventus_std.jpg", prices: {10: 40, 15: 60, 30: 100, 50: 150} },
-    { id: 4, name: "Escentric Molecules 02", desc: "Минималистичный аромат на основе амброксана. Чистый, теплый и заманивающий", img: "molecules02.jpg", prices: {10: 50, 15: 75, 30: 130, 50: 180} },
-    { id: 5, name: "Louis Vuitton Imagination", desc: "Роскошный цитрусовый аромат с нотами чая, имбиря и амброксана.", img: "imagination.jpg", prices: {10: 60, 15: 90, 30: 160, 50: 240} },
-    { id: 6, name: "Kilian Angels' Share", desc: "Гурманский шедевр: ноты коньяка, корицы, дуба и сладкой ванили.", img: "angels_share.jpg", prices: {10: 65, 15: 95, 30: 180, 50: 260} },
+    { id: 1, name: "Bleu de Chanel", desc: "Универсальный древесно-фужерный аромат. Свежесть цитрусов, мята и глубокая древесная база.", img: "blue.jpg", prices: {10: 45, 20: 80, 30: 110, 50: 165} },
+    { id: 2, name: "Paco Rabanne Invictus", desc: "Бодрый морской аромат. Грейпфрут, лавровый лист и гваяковое дерево.", img: "invictus.jpg", prices: {10: 45, 20: 80, 30: 110, 50: 165} },
+    { id: 3, name: "Creed Aventus Standart", desc: "Легендарный шипровый аромат. Фруктовая свежесть и дымная глубина.", img: "aventus_std.jpg", prices: {10: 45, 20: 80, 30: 110, 50: 165} },
+    { id: 4, name: "Escentric Molecules 02", desc: "Минималистичный аромат на основе амброксана. Чистый, теплый и заманивающий", img: "molecules02.jpg", prices: {10: 45, 20: 80, 30: 110, 50: 165} },
+    { id: 5, name: "Louis Vuitton Imagination", desc: "Роскошный цитрусовый аромат с нотами чая, имбиря и амброксана.", img: "imagination.jpg", prices: {10: 55, 20: 95, 30: 150, 50: 220} },
+    { id: 6, name: "Kilian Angels' Share", desc: "Гурманский шедевр: ноты коньяка, корицы, дуба и сладкой ванили.", img: "angels_share.jpg", prices: {10: 60, 20: 90, 30: 170, 50: 250} },
+    { id: 7, name: "Britney' Spears", desc: "Фруктовый, сладкий, нежный запах для женшин ", img: "britney_spears.jpg", prices: {10: 40, 20: 80, 30: 140, 50: 220} },
+    
 ];
 
 function init() {
@@ -116,14 +118,14 @@ window.sendOrder = function() {
 
     const user = tg.initDataUnsafe?.user;
     const userRef = user ? (user.username ? `@${user.username}` : user.first_name) : "Клиент";
-    const userId = user ? user.id : null; // Получаем ID пользователя
+    const userId = user ? user.id : null; 
 
     const orderDetails = cart.map(i => `${i.name} (${i.vol}ml) x${i.qty}`).join(', ');
     const finalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     const result = {
         customer: userRef,
-        customer_id: userId, // Передаем ID бота
+        customer_id: userId, 
         order: orderDetails,
         total: finalPrice + " zł"
     };
