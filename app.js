@@ -9,8 +9,7 @@ const products = [
     { id: 4, name: "Escentric Molecules 02", desc: "Минималистичный аромат на основе амброксана. Чистый, теплый и заманивающий", img: "molecules02.jpg", prices: {10: 45, 20: 80, 30: 110, 50: 165} },
     { id: 5, name: "Louis Vuitton Imagination", desc: "Роскошный цитрусовый аромат с нотами чая, имбиря и амброксана.", img: "imagination.jpg", prices: {10: 55, 20: 95, 30: 150, 50: 220} },
     { id: 6, name: "Kilian Angels' Share", desc: "Гурманский шедевр: ноты коньяка, корицы, дуба и сладкой ванили.", img: "angels_share.jpg", prices: {10: 60, 20: 90, 30: 170, 50: 250} },
-    { id: 7, name: "Britney' Spears", desc: "Фруктовый, сладкий, нежный запах для женшин ", img: "britney_spears.jpg", prices: {10: 40, 20: 80, 30: 140, 50: 220} },
-    
+    { id: 7, name: "Britney' Spears", desc: "Фруктовый, сладкий, нежный запах для женшин ", img: "britney_spears.jpg", prices: {10: 40, 20: 80, 30: 140, 50: 220} },  
 ];
 
 function init() {
@@ -28,7 +27,7 @@ function init() {
                 <h3 onclick="openModal(${p.id})">${p.name}</h3>
                 <div class="desc">${p.desc}</div>
                 <div class="volume-selector" id="vol-sel-${p.id}">
-                    ${[10, 15, 30, 50].map(v => `<button class="vol-btn ${v==10?'active':''}" onclick="setVolume(${p.id}, ${v}, event)">${v}ml</button>`).join('')}
+                    ${[10, 20, 30, 50].map(v => `<button class="vol-btn ${v==10?'active':''}" onclick="setVolume(${p.id}, ${v}, event)">${v}ml</button>`).join('')}
                 </div>
                 <div class="price-tag" id="price-${p.id}">${p.prices[10]} zł</div>
                 <button class="buy-btn" onclick="addToCart(${p.id})">Добавить</button>
